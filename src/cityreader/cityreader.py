@@ -93,7 +93,9 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   minLon = find_max_or_min(lat1, lat2, "min")
   
   for city in cities:
+    print(city.lat, minLat)
     if city.lat >= minLat and city.lat <= maxLat and city.lon >= minLon and city.lon <= maxLon:
+      print("here")
       within.append(city)
 
   return within
