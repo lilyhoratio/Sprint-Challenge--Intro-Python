@@ -80,4 +80,23 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
+  def find_max_or_min(value1, value2, max_min):
+    if max_min == "max":
+      return max(float(value1), float(value2))
+    elif max_min == "min":
+      return min(float(value1), float(value2))
+
+  maxLat = find_max_or_min(lat1, lat2, "max")
+  minLat = find_max_or_min(lat1, lat2, "min")
+
+  maxLon = find_max_or_min(lat1, lat2, "max")
+  minLon = find_max_or_min(lat1, lat2, "min")
+  
+  for city in cities:
+    if city.lat >= minLat and city.lat <= maxLat and city.lon >= minLon and city.lon <= maxLon:
+      within.append(city)
+
   return within
+
+print("\nSTRETCH")
+print(cityreader_stretch(45,-100,32,-120,cities))
