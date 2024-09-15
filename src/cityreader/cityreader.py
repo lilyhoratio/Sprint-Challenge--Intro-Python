@@ -1,6 +1,12 @@
 # Create a class to hold a city location. Call the class "City". It should have
 # fields for name, lat and lon (representing latitude and longitude).
-
+class City:
+  def __init__(self, name, lat, lon):
+    self.name = name
+    self.lat = lat
+    self.lon = lon
+  def __str__(self):
+    return f"{self.name}: lat {self.lat}, lon {self.lon}"
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -14,13 +20,19 @@
 #
 # Note that the first line of the CSV is header that describes the fields--this
 # should not be loaded into a City object.
+from csv import reader
+
 cities = []
 
 def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
-    
+    with open("src/cityreader/cities.csv", newline="") as cfile: #make file path dynamic?
+      file = reader(cfile)
+      for row in file:
+        if row[0] != "city": #skip first line
+          cities.append(City(row[0], float(row[3]), float(row[4])))
     return cities
 
 cityreader(cities)
@@ -68,4 +80,24 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
+  def find_max_or_min(value1, value2, max_min):
+    if max_min == "max":
+      return max(float(value1), float(value2))
+    elif max_min == "min":
+      return min(float(value1), float(value2))
+
+  maxLat = find_max_or_min(lat1, lat2, "max")
+  minLat = find_max_or_min(lat1, lat2, "min")
+
+  maxLon = find_max_or_min(lon1, lon2, "max")
+  minLon = find_max_or_min(lon1, lon2, "min")
+  
+  for city in cities:
+    print(city.lon, maxLat, minLat, maxLon, minLon)
+    if float(city.lat) >= minLat and float(city.lat) <= maxLat and float(city.lon) >= minLon and float(city.lon) <= maxLon:
+      within.append(city)
+
   return within
+
+print("\nSTRETCH")
+print(cityreader_stretch(45,-100,32,-120,cities))
